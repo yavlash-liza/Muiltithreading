@@ -74,7 +74,7 @@ public class Route {
                 Thread.currentThread().interrupt();
             }
             BusStop busStop = availableBusStops.stream()
-                    .filter(s -> s.getBusStopId() == busStopNumber)
+                    .filter(stream -> stream.getBusStopId() == busStopNumber)
                     .findFirst()
                     .orElse(new BusStop());
             if (semaphores.get(busStopNumber).availablePermits() == 0) {

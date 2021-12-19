@@ -12,11 +12,11 @@ public class BusParser {
 
     public List<Bus> parseBuses(List<String> busesData) {
         return busesData.stream()
-                .map(d -> Stream.of(d.split(DELIMITER_REGEX))
+                .map(data -> Stream.of(data.split(DELIMITER_REGEX))
                         .map(String::toString)
                         .toList())
-                .map(b -> new Bus(Integer.parseInt(b.get(0)), Integer.parseInt(b.get(1)),
-                        Arrays.stream(b.get(2).split(BUS_STOP_DELIMITER_REGEX))
+                .map(bus -> new Bus(Integer.parseInt(bus.get(0)), Integer.parseInt(bus.get(1)),
+                        Arrays.stream(bus.get(2).split(BUS_STOP_DELIMITER_REGEX))
                                 .map(Long::parseLong)
                                 .toList()))
                 .toList();

@@ -12,13 +12,9 @@ public class BusStop {
     private static final Logger logger = LogManager.getLogger();
     private static final int MIN_TIMEOUT = 1;
     private static final int MAX_TIMEOUT = 10;
-    private final long busStopId;
+    private final long busStopId = BusStopIdGenerator.generateId();
     private final int MAX_BUS_CAPACITY;
     private int currentPeopleAmount;
-
-    {
-        busStopId = BusStopIdGenerator.generateId();
-    }
 
     public BusStop() {
         MAX_BUS_CAPACITY = 0;
@@ -26,7 +22,7 @@ public class BusStop {
 
     public BusStop(int maxBusCapacity) {
         MAX_BUS_CAPACITY = maxBusCapacity;
-        currentPeopleAmount = new Random().nextInt(40) + 1;
+        currentPeopleAmount = new Random().nextInt(40) + MIN_TIMEOUT;
     }
 
     public long getBusStopId() {
@@ -46,8 +42,8 @@ public class BusStop {
 
         Route route = Route.getInstance();
         currentPeopleAmount += route.getPeopleOffBus(bus);
-        currentPeopleAmount = new Random().nextInt(currentPeopleAmount + 10 -
-                Math.max(currentPeopleAmount - 10, 0)) + Math.max(currentPeopleAmount - 10, 0);
+        currentPeopleAmount = new Random().nextInt(currentPeopleAmount + MAX_TIMEOUT -
+                Math.max(currentPeopleAmount - MAX_TIMEOUT, 0)) + Math.max(currentPeopleAmount - MAX_TIMEOUT, 0);
         currentPeopleAmount -= route.getPeopleOnBus(bus, this);
 
         int timeout = new Random().nextInt(MAX_TIMEOUT - MIN_TIMEOUT) + MIN_TIMEOUT;

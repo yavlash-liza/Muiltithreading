@@ -52,14 +52,14 @@ public class Bus implements Runnable {
 
     @Override
     public void run() {
-        logger.log(Level.INFO,"Bus {} started its route", busId);
+        logger.log(Level.INFO, "Bus {} started its route", busId);
 
         Route route = Route.getInstance();
         for (long busStopNumber : busStopNumbers) {
             BusStop busStop = new BusStop();
             try {
                 busStop = route.obtainBusStop(busStopNumber, this);
-                logger.log(Level.INFO,"Bus {} arrived to a bus stop {} with {} people",
+                logger.log(Level.INFO, "Bus {} arrived to a bus stop {} with {} people",
                         busId, busStop.getBusStopId(), currentPeopleAmount);
                 busStop.processBus(this);
             } finally {
@@ -68,7 +68,45 @@ public class Bus implements Runnable {
                         busId, busStop.getBusStopId(), currentPeopleAmount);
             }
         }
-        logger.log(Level.INFO,"Bus {} completed it's route", busId);
+        logger.log(Level.INFO, "Bus {} completed it's route", busId);
         state = State.COMPLETED;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) {return true;}
+        if (object == null || getClass() != object.getClass()) {return false;}
+        Bus aThat = (Bus) object;
+
+        if(getCurrentPeopleAmount() != aThat.getCurrentPeopleAmount()){return false;}
+
+        if(getState() == null) {
+            if(aThat.getState() != null){return false;}
+        } else if(!getState().equals(aThat.getState())){return false;}
+
+        return getMaxCapacity() == aThat.getMaxCapacity();
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + getCurrentPeopleAmount();
+        result = prime * result + getMaxCapacity();
+        result = prime * result + (getState() == null ? 0 : getState().hashCode());
+        return result;
+
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder(getClass().getSimpleName())
+                .append("{")
+                .append("busId=").append(getBusId())
+                .append(", currentPeopleAmount=").append(getCurrentPeopleAmount())
+                .append(", maxCapacity=").append(getMaxCapacity())
+                .append(", state=").append(getState())
+                .append("}")
+                .toString();
     }
 }
